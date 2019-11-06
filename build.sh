@@ -11,7 +11,12 @@ rm -r META-INF #delete jar manifests
 cd ..
 find ./ -name "*.java" > src.txt #compile working tree of all java files
 javac -cp ".:./libs/*:./src/main/java" @src.txt -d ./build/ #compile and export to build
+read -r -p "did source compile with no errors? [y/N] " response
+response=${response,,}    # to lowercase
+if [[ "$response" =~ ^(yes|y)$ ]]
+then
 cd build 
 jar cvfm build.jar ../src/main/resources/META-INF/MANIFEST.MF . #compile full jar, with proper manifest
 cp build.jar .. #move fresh jar to home
 rm -r ../build/* #empty build
+fi
